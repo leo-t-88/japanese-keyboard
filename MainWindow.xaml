@@ -1,0 +1,172 @@
+﻿<Window x:Class="Clavier_Jap.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Japanese keyboard" Height="350" Width="940"
+        WindowStartupLocation="CenterScreen" MinHeight="350" MinWidth="940" Topmost="True">
+    <Window.Resources>
+        <Style x:Key="SquareButton" TargetType="Button">
+            <Setter Property="Background" Value="#80FFFFFF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#B5B5B5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="3" ShadowDepth="1" Direction="270" Color="Gray"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LongButton" TargetType="Button" BasedOn="{StaticResource SquareButton}">
+            <Setter Property="Width" Value="125"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style x:Key="MediumButton" TargetType="Button" BasedOn="{StaticResource SquareButton}">
+            <Setter Property="Width" Value="80"/>
+        </Style>
+        <Style x:Key="EntrButton" TargetType="Button" BasedOn="{StaticResource LongButton}">
+            <Setter Property="Width" Value="83"/>
+        </Style>
+        <Style x:Key="ShiftButton" TargetType="Button" BasedOn="{StaticResource LongButton}">
+            <Setter Property="Width" Value="106"/>
+        </Style>
+        <Style x:Key="SpaceButton" TargetType="Button" BasedOn="{StaticResource SquareButton}">
+            <Setter Property="Width" Value="357"/>
+        </Style>
+
+        <Style x:Key="Result" TargetType="TextBox">
+            <Setter Property="Width" Value="720"/>
+            <Setter Property="Height" Value="auto"/>
+            <Setter Property="MinHeight" Value="60"/>
+            <Setter Property="MaxHeight" Value="200"/>
+            <Setter Property="Background" Value="#80FFFFFF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#B5B5B5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="3" ShadowDepth="1" Direction="270" Color="Gray"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ImageBrush x:Key="BackgroundImage" ImageSource="./assets/background.jpg" Stretch="UniformToFill"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <StaticResource ResourceKey="BackgroundImage" />
+        </Grid.Background>
+        <Grid VerticalAlignment="Center" Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Viewbox Stretch="UniformToFill">
+                <StackPanel Width="940">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="～" x:Name="vague" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ぬ" x:Name="nu" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ふ" x:Name="fu" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="あ" x:Name="a" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="う" x:Name="u" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="え" x:Name="ee" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="お" x:Name="o" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="や" x:Name="ya" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ゆ" x:Name="yu" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="よ" x:Name="yo" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="わ" x:Name="wa" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ほ" x:Name="ho" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="へ" x:Name="he" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="⌫ Backspace" x:Name="bckspc" Style="{StaticResource LongButton}" Click="OnButtonClicked"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="⇥" Style="{StaticResource MediumButton}" Click="OnButtonClicked"/>
+                        <Button Content="た" x:Name="ta" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="て" x:Name="te" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="い" x:Name="i" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="す" x:Name="su" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="か" x:Name="ka" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ん" x:Name="n" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="な" x:Name="na" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="に" x:Name="ni" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ら" x:Name="ra" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="せ" x:Name="se" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="、" x:Name="virgu" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="゜" x:Name="dakuon" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="゛" x:Name="dakuon2" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="￥" x:Name="yen" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Caps ね/ネ" x:Name="caps" Style="{StaticResource EntrButton}" Click="OnButtonClicked"/>
+                        <Button Content="ち" x:Name="chi" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="と" x:Name="to" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="し" x:Name="shi" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="は" x:Name="ha" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="き" x:Name="ki" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="く" x:Name="ku" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ま" x:Name="ma" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="の" x:Name="no" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="れ" x:Name="re" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="り" x:Name="ri" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="け" x:Name="ke" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="む" x:Name="mu" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="↲ Entr" x:Name="entr" Style="{StaticResource EntrButton}" Click="OnButtonClicked"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Shift" Style="{StaticResource ShiftButton}" Click="OnButtonClicked"/>
+                        <Button Content="つ" x:Name="tsu" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="さ" x:Name="sa" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="そ" x:Name="so" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ひ" x:Name="hi" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="こ" x:Name="ko" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="み" x:Name="mi" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="も" x:Name="mo" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ね" x:Name="ne" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="る" x:Name="ru" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="め" x:Name="me" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="ろ" x:Name="ro" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="Shift" Style="{StaticResource ShiftButton}" Click="OnButtonClicked"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Ctrl" Style="{StaticResource EntrButton}" Click="OnButtonClicked"/>
+                        <Button Content="Settings ⚙️" x:Name="stgs" Style="{StaticResource LongButton}" Width="90" Click="OnButtonClicked"/>
+                        <Button Content=" " x:Name="space" Style="{StaticResource SpaceButton}" Click="OnButtonClicked"/>
+                        <Button Content="Alt Gr" Style="{StaticResource EntrButton}" Click="OnButtonClicked"/>
+                        <Button Content="⮜" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="⮞" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                    </StackPanel>
+                    <TextBox x:Name="Resulttext" Grid.Row="5" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Result}" Margin="11"/>
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</Window>
