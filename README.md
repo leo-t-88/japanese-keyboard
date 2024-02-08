@@ -1,5 +1,5 @@
 # Japanese Keyboard
-> Made by Leo.t88 with ❤
+> Made with ❤ by Leo.t88
 
 - This Japanese keyboard allows you to transform your keyboard into a Japanese keyboard (With keyboard keys (AZERTY only for the moment) or touch keys)
 
