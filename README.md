@@ -11,4 +11,4 @@ If you would change the wallpaper replace in the folder ``assets`` (in the same 
 
 <img src="./screen.png">
 
-*Current version :* ``v1.0.0-beta.1``
+*View and Download the [latest version here](https://github.com/leo-t-88/japanese-keyboard/releases/latest)*
