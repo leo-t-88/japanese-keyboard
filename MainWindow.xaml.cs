@@ -13,11 +13,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
+        Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
         PreviewKeyDown += KeyPressedKeyboard;
         PreviewKeyUp += OnPreviewKeyUp;
     }
     private bool maj = false;
+    private bool setts = false;
 
     private void OnButtonClicked(object sender, RoutedEventArgs e)
     {
@@ -206,6 +207,7 @@ public partial class MainWindow : Window
     {
         SolidColorBrush newBackground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255));
         clickedButton.Background = newBackground;
+        int positionDuCurseur = Resulttext.CaretIndex;
 
         switch (clickedButton.Name)
         {
@@ -275,32 +277,37 @@ public partial class MainWindow : Window
         case "me":
         case "ro":
         case "space":
-            Resulttext.Text += clickedButton.Content.ToString();
+            Resulttext.Text = Resulttext.Text.Insert(Resulttext.CaretIndex, clickedButton.Content.ToString());
+            Resulttext.CaretIndex = positionDuCurseur + 1;
             break;
         case "entr":
-            int currentPosition = Resulttext.SelectionStart;
-            Resulttext.Text = Resulttext.Text.Insert(currentPosition, "\n");
+            Resulttext.Text = Resulttext.Text.Insert(Resulttext.CaretIndex, "\n");
+            Resulttext.CaretIndex = positionDuCurseur + 1;
             break;
         case "bckspc":
-            if (Resulttext.Text.Length > 0)
+            if (Resulttext.SelectionLength > 0)
             {
-                Resulttext.Text = Resulttext.Text.Substring(0, Resulttext.Text.Length - 1);
+                Resulttext.Text = Resulttext.Text.Remove(Resulttext.CaretIndex, Resulttext.SelectionLength);
+                Resulttext.CaretIndex = positionDuCurseur;
+            }
+            else if (Resulttext.SelectionStart > 0)
+            {
+                Resulttext.Text = Resulttext.Text.Remove(Resulttext.SelectionStart - 1, 1);
+                Resulttext.CaretIndex = positionDuCurseur - 1;
             }
             break;
-        case "arleft":
+        case "stgs":
             MessageBox.Show("Settings are not available at the moment.", "", MessageBoxButton.OK, MessageBoxImage.Information);
             break;
         default:
             break;
         }
-        Resulttext.SelectionStart = Resulttext.Text.Length;
 
         Task.Delay(150).ContinueWith(t => 
         {
             Dispatcher.Invoke(() =>
             {
                 clickedButton.Background = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255));
-
                 if (maj == true) {
                 caps.Background = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255));
                 }

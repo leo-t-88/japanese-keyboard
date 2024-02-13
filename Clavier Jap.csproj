@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ApplicationIcon>assets\app.ico</ApplicationIcon>
-    <RootNamespace>Clavier_Jap</RootNamespace>
+    <RootNamespace>ClavierJap</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>

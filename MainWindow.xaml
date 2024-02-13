@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Clavier_Jap.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Japanese keyboard" Height="350" Width="940"
+        Title="Japanese Keyboard" Height="350" Width="940"
         WindowStartupLocation="CenterScreen" MinHeight="350" MinWidth="940" Topmost="True">
     <Window.Resources>
         <Style x:Key="SquareButton" TargetType="Button">
