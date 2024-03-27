@@ -1,7 +1,7 @@
 # Japanese Keyboard
 > Made with ❤ by Leo.t88
 
-- This Japanese keyboard allows you to transform your keyboard into a Japanese keyboard (With keyboard keys (AZERTY only for the moment) or touch keys)
+- This Japanese keyboard allows you to transform your keyboard into a Japanese keyboard (With keyboard keys or touch keys)
 
 - This keyboard allows you to write with Hiragana and Katagana easily and quickly since the keyboard and also display visually practical if you are not the habit of using it daily.
 
