@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Japanese Keyboard" Height="350" Width="940"
-        WindowStartupLocation="CenterScreen" MinHeight="350" MinWidth="940" Topmost="True">
+        WindowStartupLocation="CenterScreen" MinHeight="350" MinWidth="940" Topmost="True" StateChanged="WindowStateChanged">
     <Window.Resources>
         <Style x:Key="SquareButton" TargetType="Button">
             <Setter Property="Background" Value="#80FFFFFF"/>
@@ -73,13 +73,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <ImageBrush x:Key="BackgroundImage" ImageSource="./assets/background.jpg" Stretch="UniformToFill"/>
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="BackgroundKeyboard">
         <Grid.Background>
-            <StaticResource ResourceKey="BackgroundImage" />
+            <ImageBrush ImageSource="{Binding BackgroundImagePath}" Stretch="UniformToFill"/>
         </Grid.Background>
         <Grid VerticalAlignment="Center" Margin="4">
             <Grid.RowDefinitions>
@@ -161,10 +159,188 @@
                         <Button Content="Settings ⚙️" x:Name="stgs" Style="{StaticResource LongButton}" Width="90" Click="OnButtonClicked"/>
                         <Button Content=" " x:Name="space" Style="{StaticResource SpaceButton}" Click="OnButtonClicked"/>
                         <Button Content="Alt Gr" Style="{StaticResource EntrButton}" Click="OnButtonClicked"/>
-                        <Button Content="⮜" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
-                        <Button Content="⮞" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="⮜" x:Name="leftarr" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
+                        <Button Content="⮞" x:Name="rightarr" Style="{StaticResource SquareButton}" Click="OnButtonClicked"/>
                     </StackPanel>
                     <TextBox x:Name="Resulttext" Grid.Row="5" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Result}" Margin="11"/>
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+        <Grid x:Name="Stngspage" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="#EDEDED" Opacity="0.8"/>
+            <Viewbox Stretch="UniformToFill">
+                <StackPanel Height="350" Width="940">
+                    <TextBlock Grid.Row="1" Text="🡸 Back" FontSize="18" FontWeight="Bold" Margin="5" PreviewMouseLeftButtonDown="SettingsBtnDown" Cursor="Hand"/>
+                    <TextBlock Grid.Row="2" Text="Keyboard Type :" FontSize="18" Margin="13,0,0,0"/>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal">
+                        <Button x:Name="BtnQw" Click="OnButtonClicked" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/qwerty.png" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#BBBBBB" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnQwActive" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/qwerty.png" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#87CEEB"/>
+                                        <CheckBox Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <CheckBox.Template>
+                                                <ControlTemplate TargetType="CheckBox">
+                                                    <Grid>
+                                                        <Border Background="#87CEEB" CornerRadius="5" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock Text="✔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Foreground="white"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </CheckBox.Template>
+                                        </CheckBox>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnAz" Click="OnButtonClicked" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/azerty.png" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#BBBBBB"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnAzActive" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/azerty.png" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#87CEEB"/>
+                                        <CheckBox Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <CheckBox.Template>
+                                                <ControlTemplate TargetType="CheckBox">
+                                                    <Grid>
+                                                        <Border Background="#87CEEB" CornerRadius="5" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock Text="✔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Foreground="white"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </CheckBox.Template>
+                                        </CheckBox>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Grid.Row="4" Text="Background :" FontSize="18" Margin="13,0,0,0"/>
+                    <StackPanel Grid.Row="5" Orientation="Horizontal">
+                        <Button x:Name="BtnDe" Click="OnButtonClicked" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/default.jpg" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#BBBBBB"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnDeActive" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/default.jpg" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#87CEEB"/>
+                                        <CheckBox Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <CheckBox.Template>
+                                                <ControlTemplate TargetType="CheckBox">
+                                                    <Grid>
+                                                        <Border Background="#87CEEB" CornerRadius="5" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock Text="✔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Foreground="white"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </CheckBox.Template>
+                                        </CheckBox>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnCu" Click="OnButtonClicked" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="{Binding CustomImagePath}" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#BBBBBB"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnCuActive" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="{Binding CustomImagePath}" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#87CEEB"/>
+                                        <CheckBox Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <CheckBox.Template>
+                                                <ControlTemplate TargetType="CheckBox">
+                                                    <Grid>
+                                                        <Border Background="#87CEEB" CornerRadius="5" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock Text="✔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Foreground="white"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </CheckBox.Template>
+                                        </CheckBox>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnRe" Content="" Click="OnButtonClicked" ToolTip="Change custom background" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/changebg.jpg" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#BBBBBB"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Viewbox>
         </Grid>

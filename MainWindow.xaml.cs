@@ -2,6 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.IO;
+using System.Text.Json;
+using Microsoft.Win32;
 
 namespace Clavier_Jap;
 
@@ -10,16 +13,106 @@ namespace Clavier_Jap;
 /// </summary>
 public partial class MainWindow : Window
 {
+    public string BackgroundImagePath { get; set; }
+    public string CustomImagePath { get; set; }
     public MainWindow()
     {
         InitializeComponent();
-        Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+        DataContext = this;
+        SettignsApp(new string[] {"Start"});
         PreviewKeyDown += KeyPressedKeyboard;
         PreviewKeyUp += OnPreviewKeyUp;
     }
     private bool maj = false;
     private bool setts = false;
 
+    public class KeyboardConfig
+    {
+        public string KeyboardApp { get; set; }
+        public string BackgroundApp { get; set; }
+        public string CustomImg { get; set; }
+    }
+    private void SettignsApp(string[] args)
+    {
+        string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "config.json");
+        if (!File.Exists(configFilePath))
+        {
+            var defaultConfig = new KeyboardConfig
+            {
+                KeyboardApp = "qwerty",
+                BackgroundApp = "default",
+                CustomImg = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "custom.jpg")
+            };
+            string jsonString = JsonSerializer.Serialize(defaultConfig);
+            File.WriteAllText(configFilePath, jsonString);
+        }
+        string jsonContent = File.ReadAllText(configFilePath);
+        var config = JsonSerializer.Deserialize<KeyboardConfig>(jsonContent);
+        if (args.Contains("Qwerty"))
+        {
+            config.KeyboardApp = "qwerty";
+        }
+        else if (args.Contains("Azerty"))
+        {
+            config.KeyboardApp = "azerty";
+        }
+        else if (args.Contains("Default"))
+        {
+            config.BackgroundApp = "default";
+        }
+        else if (args.Contains("Custom"))
+        {
+            config.BackgroundApp = "custom";
+        }
+        else if (!args.Contains("Start"))
+        {
+            config.CustomImg = args[0];
+        }
+        if (!File.Exists(config.CustomImg)){
+            config.CustomImg = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "custom.jpg");
+        }
+        string updatedJson = JsonSerializer.Serialize(config);
+        File.WriteAllText(configFilePath, updatedJson);
+        CustomImagePath = config.CustomImg;
+        if (config.BackgroundApp == "custom")
+        {
+            BtnCuActive.Visibility = Visibility.Visible;
+            BtnCu.Visibility = Visibility.Collapsed;
+            BtnDeActive.Visibility = Visibility.Collapsed;
+            BtnDe.Visibility = Visibility.Visible;
+            BackgroundImagePath = config.CustomImg;
+        } else {
+            BtnDeActive.Visibility = Visibility.Visible;
+            BtnDe.Visibility = Visibility.Collapsed;
+            BtnCuActive.Visibility = Visibility.Collapsed;
+            BtnCu.Visibility = Visibility.Visible;
+            BackgroundImagePath = "./assets/default.jpg";
+        }
+        if (config.KeyboardApp == "azerty")
+        {
+            BtnAzActive.Visibility = Visibility.Visible;
+            BtnAz.Visibility = Visibility.Collapsed;
+            BtnQwActive.Visibility = Visibility.Collapsed;
+            BtnQw.Visibility = Visibility.Visible;
+        } else {
+            BtnQwActive.Visibility = Visibility.Visible;
+            BtnQw.Visibility = Visibility.Collapsed;
+            BtnAzActive.Visibility = Visibility.Collapsed;
+            BtnAz.Visibility = Visibility.Visible;
+        }
+    }
+
+    private void WindowStateChanged(object sender, EventArgs e)
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            Topmost = false;
+        }
+        else
+        {
+            Topmost = true;
+        }
+    }
     private void OnButtonClicked(object sender, RoutedEventArgs e)
     {
         if (sender is Button clickedButton)
@@ -39,6 +132,107 @@ public partial class MainWindow : Window
     {
         if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
         {
+            string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "config.json");
+            string jsonContent = File.ReadAllText(configFilePath);
+            var config = JsonSerializer.Deserialize<KeyboardConfig>(jsonContent);
+            if (config.KeyboardApp == "azerty")
+            {
+                switch (e.Key)
+                {
+                case Key.OemOpenBrackets:
+                    UpdateButtonAndResult(ho);
+                    break;
+                case Key.OemQuotes:
+                    UpdateButtonAndResult(vague);
+                    break;
+                case Key.A:
+                    UpdateButtonAndResult(ta);
+                    break;
+                case Key.Z:
+                    UpdateButtonAndResult(te);
+                    break;
+                case Key.Oem6:
+                    UpdateButtonAndResult(virgu);
+                    break;
+                case Key.Oem1:
+                    UpdateButtonAndResult(dakuon);
+                    break;
+                case Key.Q:
+                    UpdateButtonAndResult(chi);
+                    break;
+                case Key.M:
+                    UpdateButtonAndResult(ri);
+                    break;
+                case Key.Oem3:
+                    UpdateButtonAndResult(ke);
+                    break;
+                case Key.OemComma:
+                    UpdateButtonAndResult(mo);
+                    break;
+                case Key.OemPeriod:
+                    UpdateButtonAndResult(ne);
+                    break;
+                case Key.OemQuestion:
+                    UpdateButtonAndResult(ru);
+                    break;
+                case Key.Oem8:
+                    UpdateButtonAndResult(me);
+                    break;
+                case Key.W:
+                    UpdateButtonAndResult(tsu);
+                    break;
+                default:
+                    break;
+                }
+            } else {
+                switch (e.Key)
+                {
+                case Key.OemMinus:
+                    UpdateButtonAndResult(ho);
+                    break;
+                case Key.Oem3:
+                    UpdateButtonAndResult(vague);
+                    break;
+                case Key.Q:
+                    UpdateButtonAndResult(ta);
+                    break;
+                case Key.W:
+                    UpdateButtonAndResult(te);
+                    break;
+                case Key.OemOpenBrackets:
+                    UpdateButtonAndResult(virgu);
+                    break;
+                case Key.Oem6:
+                    UpdateButtonAndResult(dakuon);
+                    break;
+                case Key.Z:
+                    UpdateButtonAndResult(tsu);
+                    break;
+                case Key.A:
+                    UpdateButtonAndResult(chi);
+                    break;
+                case Key.Oem1:
+                    UpdateButtonAndResult(ri);
+                    break;
+                case Key.OemQuotes:
+                    UpdateButtonAndResult(ke);
+                    break;
+                case Key.M:
+                    UpdateButtonAndResult(mo);
+                    break;
+                case Key.OemComma:
+                    UpdateButtonAndResult(ne);
+                    break;
+                case Key.OemPeriod:
+                    UpdateButtonAndResult(ru);
+                    break;
+                case Key.OemQuestion:
+                    UpdateButtonAndResult(me);
+                    break;
+                default:
+                    break;
+                }
+            }
             switch (e.Key)
             {
             case Key.D1:
@@ -71,20 +265,11 @@ public partial class MainWindow : Window
             case Key.D0:
                 UpdateButtonAndResult(wa);
                 break;
-            case Key.OemOpenBrackets:
-                UpdateButtonAndResult(ho);
-                break;
             case Key.Back:
                 UpdateButtonAndResult(bckspc);
                 break;
             case Key.OemPlus:
                 UpdateButtonAndResult(he);
-                break;
-            case Key.A:
-                UpdateButtonAndResult(ta);
-                break;
-            case Key.Z:
-                UpdateButtonAndResult(te);
                 break;
             case Key.E:
                 UpdateButtonAndResult(i);
@@ -110,17 +295,11 @@ public partial class MainWindow : Window
             case Key.P:
                 UpdateButtonAndResult(se);
                 break;
-            case Key.Oem6:
-                UpdateButtonAndResult(virgu);
-                break;
-            case Key.Oem1:
-                UpdateButtonAndResult(dakuon);
+            case Key.OemBackslash:
+                UpdateButtonAndResult(ro);
                 break;
             case Key.Oem5:
                 UpdateButtonAndResult(dakuon2);
-                break;
-            case Key.Q:
-                UpdateButtonAndResult(chi);
                 break;
             case Key.S:
                 UpdateButtonAndResult(to);
@@ -146,50 +325,32 @@ public partial class MainWindow : Window
             case Key.L:
                 UpdateButtonAndResult(re);
                 break;
-            case Key.M:
-                UpdateButtonAndResult(ri);
-                break;
-            case Key.Oem3:
-                UpdateButtonAndResult(ke);
-                break;
             case Key.Enter:
                 UpdateButtonAndResult(entr);
                 break;
-            case Key.OemBackslash:
-                UpdateButtonAndResult(tsu);
-                break;
-            case Key.W:
+            case Key.X:
                 UpdateButtonAndResult(sa);
                 break;
-            case Key.X:
+            case Key.C:
                 UpdateButtonAndResult(so);
                 break;
-            case Key.C:
+            case Key.V:
                 UpdateButtonAndResult(hi);
                 break;
-            case Key.V:
+            case Key.B:
                 UpdateButtonAndResult(ko);
                 break;
-            case Key.B:
-                UpdateButtonAndResult(mi);
-                break;
             case Key.N:
-                UpdateButtonAndResult(mo);
-                break;
-            case Key.OemComma:
-                UpdateButtonAndResult(ne);
-                break;
-            case Key.OemPeriod:
-                UpdateButtonAndResult(ru);
-                break;
-            case Key.OemQuestion:
-                UpdateButtonAndResult(me);
-                break;
-            case Key.Oem8:
-                UpdateButtonAndResult(ro);
+                UpdateButtonAndResult(mi);
                 break;
             case Key.Space:
                 UpdateButtonAndResult(space);
+                break;
+            case Key.Left:
+                UpdateButtonAndResult(leftarr);
+                break;
+            case Key.Right:
+                UpdateButtonAndResult(rightarr);
                 break;
             case Key.CapsLock:
             case Key.LeftShift:
@@ -197,9 +358,60 @@ public partial class MainWindow : Window
                 UpdateButtonAndResult(caps);
                 break;
             default:
-                return;
+                break;
             }
             e.Handled = true;
+        }
+    }
+    private void SettingsBtnDown(object sender, MouseButtonEventArgs e)
+    {
+        SettingsPage();
+    }
+    private void SettingsPage()
+    {
+        if (setts == false)
+        {
+            Stngspage.Visibility = Visibility.Visible;
+            setts = true;
+        } else
+        {
+            Stngspage.Visibility = Visibility.Collapsed;
+            setts = false;
+        }
+    }
+
+    private void ChangeCustomImg()
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Fichiers image (*.jpg)|*.jpg";
+        bool? result = openFileDialog.ShowDialog();
+        if (result == true)
+        {
+            SettignsApp(new string[] {openFileDialog.FileName});
+            SettignsApp(new string[] {"Custom"});
+            Restart();
+        }
+    }
+
+    private void Restart()
+    {
+        string Textouput = Resulttext.Text;
+        bool isMaximized = WindowState == WindowState.Maximized;
+        int x = (int)Left; int y = (int)Top; int height = (int)Height; int width = (int)Width;
+        var NewWindow = new MainWindow();
+        NewWindow.SettingsPage();
+        NewWindow.Show();
+        if (isMaximized)
+        {
+            NewWindow.WindowState = WindowState.Maximized;
+        } else {
+            NewWindow.Left = x; NewWindow.Top = y; NewWindow.Height = height; NewWindow.Width = width;
+        }
+        Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = NewWindow;
+        NewWindow.Resulttext.Text = Textouput;
+        if(Console.CapsLock){
+            NewWindow.UpdateButtonAndResult(caps);
         }
     }
 
@@ -208,9 +420,27 @@ public partial class MainWindow : Window
         SolidColorBrush newBackground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255));
         clickedButton.Background = newBackground;
         int positionDuCurseur = Resulttext.CaretIndex;
+        Resulttext.Focus();
 
         switch (clickedButton.Name)
         {
+        case "BtnQw":
+            SettignsApp(new string[] {"Qwerty"});
+            return;
+        case "BtnAz":
+            SettignsApp(new string[] {"Azerty"});
+            return;
+        case "BtnDe":
+            SettignsApp(new string[] {"Default"});
+            Restart();
+            return;
+        case "BtnCu":
+            SettignsApp(new string[] {"Custom"});
+            Restart();
+            return;
+        case "BtnRe":
+            ChangeCustomImg();
+            return;
         case "caps":
             if (maj == false){
                 nu.Content = "ヌ";fu.Content = "フ";a.Content = "ア";u.Content = "ウ";ee.Content = "エ";o.Content = "オ";ya.Content = "ヤ";yu.Content = "ユ";yo.Content = "ヨ";wa.Content = "ワ";ho.Content = "ホ";
@@ -284,6 +514,15 @@ public partial class MainWindow : Window
             Resulttext.Text = Resulttext.Text.Insert(Resulttext.CaretIndex, "\n");
             Resulttext.CaretIndex = positionDuCurseur + 1;
             break;
+        case "leftarr":
+            if (positionDuCurseur > 0)
+            {
+                Resulttext.CaretIndex = positionDuCurseur - 1;
+            }
+            break;
+        case "rightarr":
+            Resulttext.CaretIndex = positionDuCurseur + 1;
+            break;
         case "bckspc":
             if (Resulttext.SelectionLength > 0)
             {
@@ -297,19 +536,18 @@ public partial class MainWindow : Window
             }
             break;
         case "stgs":
-            MessageBox.Show("Settings are not available at the moment.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            SettingsPage();
             break;
         default:
             break;
         }
-
         Task.Delay(150).ContinueWith(t => 
         {
             Dispatcher.Invoke(() =>
             {
                 clickedButton.Background = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255));
                 if (maj == true) {
-                caps.Background = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255));
+                    caps.Background = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255));
                 }
             });
         });
