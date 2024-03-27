@@ -7,7 +7,6 @@ using System.Text.Json;
 using Microsoft.Win32;
 
 namespace Clavier_Jap;
-
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
@@ -383,7 +382,7 @@ public partial class MainWindow : Window
     private void ChangeCustomImg()
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
-        openFileDialog.Filter = "Fichiers image (*.jpg)|*.jpg";
+        openFileDialog.Filter = "Fichiers image (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
         bool? result = openFileDialog.ShowDialog();
         if (result == true)
         {
