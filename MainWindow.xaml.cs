@@ -55,6 +55,10 @@ public partial class MainWindow : Window
         {
             config.KeyboardApp = "azerty";
         }
+        else if (args.Contains("SmartInput"))
+        {
+            config.KeyboardApp = "smartinput";
+        }
         else if (args.Contains("Default"))
         {
             config.BackgroundApp = "default";
@@ -93,14 +97,24 @@ public partial class MainWindow : Window
             BtnAz.Visibility = Visibility.Collapsed;
             BtnQwActive.Visibility = Visibility.Collapsed;
             BtnQw.Visibility = Visibility.Visible;
+            BtnSIActive.Visibility = Visibility.Collapsed;
+            BtnSI.Visibility = Visibility.Visible;
+        } else if (config.KeyboardApp == "smartinput"){
+            BtnAzActive.Visibility = Visibility.Collapsed;
+            BtnAz.Visibility = Visibility.Visible;
+            BtnQwActive.Visibility = Visibility.Collapsed;
+            BtnQw.Visibility = Visibility.Visible;
+            BtnSIActive.Visibility = Visibility.Visible;
+            BtnSI.Visibility = Visibility.Collapsed;
         } else {
             BtnQwActive.Visibility = Visibility.Visible;
             BtnQw.Visibility = Visibility.Collapsed;
             BtnAzActive.Visibility = Visibility.Collapsed;
             BtnAz.Visibility = Visibility.Visible;
+            BtnSIActive.Visibility = Visibility.Collapsed;
+            BtnSI.Visibility = Visibility.Visible;
         }
     }
-
     private void WindowStateChanged(object sender, EventArgs e)
     {
         if (WindowState == WindowState.Maximized)
@@ -112,6 +126,14 @@ public partial class MainWindow : Window
             Topmost = true;
         }
     }
+    private readonly Dictionary<string, string> substitutionMap = new Dictionary<string, string>()
+        {
+            {"chi", "ち"},{"shi", "し"},{"tsu", "つ"},
+            {"kya", "きゃ"},{"kyu", "きゅ"},{"kyo", "きょ"},{"gya", "ぎゃ"},{"gyu", "ぎゅ"},{"gyo", "ぎょ"},{"sha", "しゃ"},{"shu", "しゅ"},{"sho", "しょ"},{"ja", "じゃ"},{"ju", "じゅ"},{"jo", "じょ"},{"cha", "ちゃ"},{"chu", "ちゅ"},{"cho", "ちょ"},{"nya", "にゃ"},{"nyu", "にゅ"},{"nyo", "にょ"},{"hya", "ひゃ"},{"hyu", "ひゅ"},{"hyo", "ひょ"},{"pya", "ぴゃ"},{"pyu", "ぴゅ"},{"pyo", "ぴょ"},{"mya", "みゃ"},{"myu", "みゅ"},{"myo", "みょ"},{"rya", "りゃ"},{"ryu", "りゅ"},{"ryo", "りょ"},
+            {"ya", "や"},{"wa", "わ"},{"ta", "た"},{"ka", "か"},{"んa", "な"},{"ra", "ら"},{"ha", "は"},{"ma", "ま"},{"sa", "さ"},{"ke", "け"},{"he", "へ"},{"me", "め"},{"te", "て"},{"んe", "ね"},{"se", "せ"},{"re", "れ"},{"yu", "ゆ"},{"fu", "ふ"},{"mu", "む"},{"ku", "く"},{"んu", "ぬ"},{"su", "す"},{"ru", "る"},{"yo", "よ"},{"ho", "ほ"},{"mo", "も"},{"ko", "こ"},{"んo", "の"},{"so", "そ"},{"ro", "ろ"},{"to", "と"},{"hi", "ひ"},{"mi", "み"},{"ki", "き"},{"んi", "に"},{"ri", "り"},
+            {"ga", "が"},{"gi", "ぎ"},{"gu", "ぐ"},{"ge", "げ"},{"go", "ご"},{"za", "ざ"},{"ji", "じ"},{"zu", "ず"},{"ze", "ぜ"},{"zo", "ぞ"},{"da", "だ"},{"じi", "ぢ"},{"ずu", "づ"},{"de", "で"},{"do", "ど"},{"ba", "ば"},{"bi", "び"},{"bu", "ぶ"},{"be", "べ"},{"bo", "ぼ"},{"pa", "ぱ"},{"pi", "ぴ"},{"pu", "ぷ"},{"pe", "ぺ"},{"po", "ぽ"},
+            {"a", "あ"},{"u", "う"},{"o", "お"},{"e", "え"},{"i", "い"},{"n", "ん"},
+        };
     private void OnButtonClicked(object sender, RoutedEventArgs e)
     {
         if (sender is Button clickedButton)
@@ -134,232 +156,252 @@ public partial class MainWindow : Window
             string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "config.json");
             string jsonContent = File.ReadAllText(configFilePath);
             var config = JsonSerializer.Deserialize<KeyboardConfig>(jsonContent);
-            if (config.KeyboardApp == "azerty")
-            {
+            if (config.KeyboardApp != "smartinput"){
+                if (config.KeyboardApp == "azerty")
+                {
+                    switch (e.Key)
+                    {
+                    case Key.OemOpenBrackets:
+                        UpdateButtonAndResult(ho);
+                        break;
+                    case Key.OemQuotes:
+                        UpdateButtonAndResult(vague);
+                        break;
+                    case Key.A:
+                        UpdateButtonAndResult(ta);
+                        break;
+                    case Key.Z:
+                        UpdateButtonAndResult(te);
+                        break;
+                    case Key.Oem6:
+                        UpdateButtonAndResult(virgu);
+                        break;
+                    case Key.Oem1:
+                        UpdateButtonAndResult(dakuon);
+                        break;
+                    case Key.Q:
+                        UpdateButtonAndResult(chi);
+                        break;
+                    case Key.M:
+                        UpdateButtonAndResult(ri);
+                        break;
+                    case Key.Oem3:
+                        UpdateButtonAndResult(ke);
+                        break;
+                    case Key.OemComma:
+                        UpdateButtonAndResult(mo);
+                        break;
+                    case Key.OemPeriod:
+                        UpdateButtonAndResult(ne);
+                        break;
+                    case Key.OemQuestion:
+                        UpdateButtonAndResult(ru);
+                        break;
+                    case Key.Oem8:
+                        UpdateButtonAndResult(me);
+                        break;
+                    case Key.W:
+                        UpdateButtonAndResult(tsu);
+                        break;
+                    default:
+                        break;
+                    }
+                } else {
+                    switch (e.Key)
+                    {
+                    case Key.OemMinus:
+                        UpdateButtonAndResult(ho);
+                        break;
+                    case Key.Oem3:
+                        UpdateButtonAndResult(vague);
+                        break;
+                    case Key.Q:
+                        UpdateButtonAndResult(ta);
+                        break;
+                    case Key.W:
+                        UpdateButtonAndResult(te);
+                        break;
+                    case Key.OemOpenBrackets:
+                        UpdateButtonAndResult(virgu);
+                        break;
+                    case Key.Oem6:
+                        UpdateButtonAndResult(dakuon);
+                        break;
+                    case Key.Z:
+                        UpdateButtonAndResult(tsu);
+                        break;
+                    case Key.A:
+                        UpdateButtonAndResult(chi);
+                        break;
+                    case Key.Oem1:
+                        UpdateButtonAndResult(ri);
+                        break;
+                    case Key.OemQuotes:
+                        UpdateButtonAndResult(ke);
+                        break;
+                    case Key.M:
+                        UpdateButtonAndResult(mo);
+                        break;
+                    case Key.OemComma:
+                        UpdateButtonAndResult(ne);
+                        break;
+                    case Key.OemPeriod:
+                        UpdateButtonAndResult(ru);
+                        break;
+                    case Key.OemQuestion:
+                        UpdateButtonAndResult(me);
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 switch (e.Key)
                 {
-                case Key.OemOpenBrackets:
-                    UpdateButtonAndResult(ho);
+                case Key.D1:
+                    UpdateButtonAndResult(nu);
                     break;
-                case Key.OemQuotes:
-                    UpdateButtonAndResult(vague);
+                case Key.D2:
+                    UpdateButtonAndResult(fu);
                     break;
-                case Key.A:
-                    UpdateButtonAndResult(ta);
+                case Key.D3:
+                    UpdateButtonAndResult(a);
                     break;
-                case Key.Z:
-                    UpdateButtonAndResult(te);
+                case Key.D4:
+                    UpdateButtonAndResult(u);
                     break;
-                case Key.Oem6:
-                    UpdateButtonAndResult(virgu);
+                case Key.D5:
+                    UpdateButtonAndResult(ee);
                     break;
-                case Key.Oem1:
-                    UpdateButtonAndResult(dakuon);
+                case Key.D6:
+                    UpdateButtonAndResult(o);
                     break;
-                case Key.Q:
-                    UpdateButtonAndResult(chi);
+                case Key.D7:
+                    UpdateButtonAndResult(ya);
                     break;
-                case Key.M:
-                    UpdateButtonAndResult(ri);
+                case Key.D8:
+                    UpdateButtonAndResult(yu);
                     break;
-                case Key.Oem3:
-                    UpdateButtonAndResult(ke);
+                case Key.D9:
+                    UpdateButtonAndResult(yo);
                     break;
-                case Key.OemComma:
-                    UpdateButtonAndResult(mo);
+                case Key.D0:
+                    UpdateButtonAndResult(wa);
                     break;
-                case Key.OemPeriod:
-                    UpdateButtonAndResult(ne);
+                case Key.OemPlus:
+                    UpdateButtonAndResult(he);
                     break;
-                case Key.OemQuestion:
-                    UpdateButtonAndResult(ru);
+                case Key.E:
+                    UpdateButtonAndResult(i);
                     break;
-                case Key.Oem8:
-                    UpdateButtonAndResult(me);
+                case Key.R:
+                    UpdateButtonAndResult(su);
                     break;
-                case Key.W:
-                    UpdateButtonAndResult(tsu);
+                case Key.T:
+                    UpdateButtonAndResult(ka);
+                    break;
+                case Key.Y:
+                    UpdateButtonAndResult(n);
+                    break;
+                case Key.U:
+                    UpdateButtonAndResult(na);
+                    break;
+                case Key.I:
+                    UpdateButtonAndResult(ni);
+                    break;
+                case Key.O:
+                    UpdateButtonAndResult(ra);
+                    break;
+                case Key.P:
+                    UpdateButtonAndResult(se);
+                    break;
+                case Key.OemBackslash:
+                    UpdateButtonAndResult(ro);
+                    break;
+                case Key.Oem5:
+                    UpdateButtonAndResult(dakuon2);
+                    break;
+                case Key.S:
+                    UpdateButtonAndResult(to);
+                    break;
+                case Key.D:
+                    UpdateButtonAndResult(shi);
+                    break;
+                case Key.F:
+                    UpdateButtonAndResult(ha);
+                    break;
+                case Key.G:
+                    UpdateButtonAndResult(ki);
+                    break;
+                case Key.H:
+                    UpdateButtonAndResult(ku);
+                    break;
+                case Key.J:
+                    UpdateButtonAndResult(ma);
+                    break;
+                case Key.K:
+                    UpdateButtonAndResult(no);
+                    break;
+                case Key.L:
+                    UpdateButtonAndResult(re);
+                    break;
+                case Key.X:
+                    UpdateButtonAndResult(sa);
+                    break;
+                case Key.C:
+                    UpdateButtonAndResult(so);
+                    break;
+                case Key.V:
+                    UpdateButtonAndResult(hi);
+                    break;
+                case Key.B:
+                    UpdateButtonAndResult(ko);
+                    break;
+                case Key.N:
+                    UpdateButtonAndResult(mi);
                     break;
                 default:
                     break;
                 }
-            } else {
-                switch (e.Key)
-                {
-                case Key.OemMinus:
-                    UpdateButtonAndResult(ho);
-                    break;
-                case Key.Oem3:
-                    UpdateButtonAndResult(vague);
-                    break;
-                case Key.Q:
-                    UpdateButtonAndResult(ta);
-                    break;
-                case Key.W:
-                    UpdateButtonAndResult(te);
-                    break;
-                case Key.OemOpenBrackets:
-                    UpdateButtonAndResult(virgu);
-                    break;
-                case Key.Oem6:
-                    UpdateButtonAndResult(dakuon);
-                    break;
-                case Key.Z:
-                    UpdateButtonAndResult(tsu);
-                    break;
-                case Key.A:
-                    UpdateButtonAndResult(chi);
-                    break;
-                case Key.Oem1:
-                    UpdateButtonAndResult(ri);
-                    break;
-                case Key.OemQuotes:
-                    UpdateButtonAndResult(ke);
-                    break;
-                case Key.M:
-                    UpdateButtonAndResult(mo);
-                    break;
-                case Key.OemComma:
-                    UpdateButtonAndResult(ne);
-                    break;
-                case Key.OemPeriod:
-                    UpdateButtonAndResult(ru);
-                    break;
-                case Key.OemQuestion:
-                    UpdateButtonAndResult(me);
-                    break;
-                default:
-                    break;
-                }
+                e.Handled = true;
             }
-            switch (e.Key)
-            {
-            case Key.D1:
-                UpdateButtonAndResult(nu);
-                break;
-            case Key.D2:
-                UpdateButtonAndResult(fu);
-                break;
-            case Key.D3:
-                UpdateButtonAndResult(a);
-                break;
-            case Key.D4:
-                UpdateButtonAndResult(u);
-                break;
-            case Key.D5:
-                UpdateButtonAndResult(ee);
-                break;
-            case Key.D6:
-                UpdateButtonAndResult(o);
-                break;
-            case Key.D7:
-                UpdateButtonAndResult(ya);
-                break;
-            case Key.D8:
-                UpdateButtonAndResult(yu);
-                break;
-            case Key.D9:
-                UpdateButtonAndResult(yo);
-                break;
-            case Key.D0:
-                UpdateButtonAndResult(wa);
-                break;
-            case Key.Back:
-                UpdateButtonAndResult(bckspc);
-                break;
-            case Key.OemPlus:
-                UpdateButtonAndResult(he);
-                break;
-            case Key.E:
-                UpdateButtonAndResult(i);
-                break;
-            case Key.R:
-                UpdateButtonAndResult(su);
-                break;
-            case Key.T:
-                UpdateButtonAndResult(ka);
-                break;
-            case Key.Y:
-                UpdateButtonAndResult(n);
-                break;
-            case Key.U:
-                UpdateButtonAndResult(na);
-                break;
-            case Key.I:
-                UpdateButtonAndResult(ni);
-                break;
-            case Key.O:
-                UpdateButtonAndResult(ra);
-                break;
-            case Key.P:
-                UpdateButtonAndResult(se);
-                break;
-            case Key.OemBackslash:
-                UpdateButtonAndResult(ro);
-                break;
-            case Key.Oem5:
-                UpdateButtonAndResult(dakuon2);
-                break;
-            case Key.S:
-                UpdateButtonAndResult(to);
-                break;
-            case Key.D:
-                UpdateButtonAndResult(shi);
-                break;
-            case Key.F:
-                UpdateButtonAndResult(ha);
-                break;
-            case Key.G:
-                UpdateButtonAndResult(ki);
-                break;
-            case Key.H:
-                UpdateButtonAndResult(ku);
-                break;
-            case Key.J:
-                UpdateButtonAndResult(ma);
-                break;
-            case Key.K:
-                UpdateButtonAndResult(no);
-                break;
-            case Key.L:
-                UpdateButtonAndResult(re);
-                break;
-            case Key.Enter:
-                UpdateButtonAndResult(entr);
-                break;
-            case Key.X:
-                UpdateButtonAndResult(sa);
-                break;
-            case Key.C:
-                UpdateButtonAndResult(so);
-                break;
-            case Key.V:
-                UpdateButtonAndResult(hi);
-                break;
-            case Key.B:
-                UpdateButtonAndResult(ko);
-                break;
-            case Key.N:
-                UpdateButtonAndResult(mi);
-                break;
-            case Key.Space:
-                UpdateButtonAndResult(space);
-                break;
-            case Key.Left:
-                UpdateButtonAndResult(leftarr);
-                break;
-            case Key.Right:
-                UpdateButtonAndResult(rightarr);
-                break;
-            case Key.CapsLock:
-            case Key.LeftShift:
-            case Key.RightShift:
+            if (e.Key == Key.CapsLock || e.Key == Key.LeftShift || e.Key == Key.RightShift){
                 UpdateButtonAndResult(caps);
-                break;
-            default:
-                break;
+                e.Handled = true;
+            } else if (e.Key == Key.Space){
+                UpdateButtonAndResult(space);
+                e.Handled = true;
+            } else if (e.Key == Key.Enter){
+                UpdateButtonAndResult(entr);
+                e.Handled = true;
+            } else if (e.Key == Key.Back){
+                UpdateButtonAndResult(bckspc);
+                e.Handled = true;
+            } else if (e.Key == Key.Left){
+                UpdateButtonAndResult(leftarr);
+                e.Handled = true;
+            } else if (e.Key == Key.Right){
+                UpdateButtonAndResult(rightarr);
+                e.Handled = true;
             }
-            e.Handled = true;
+
+            if (config.KeyboardApp == "smartinput"){
+                Task.Delay(50).ContinueWith(t => 
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        int positionDuCurseur = Resulttext.CaretIndex;
+                        string texteSaisi = Resulttext.Text;
+                        foreach (var entry in substitutionMap)
+                        {
+                            texteSaisi = texteSaisi.Replace(entry.Key, entry.Value);
+                        }
+                        Resulttext.Text = texteSaisi;
+                        if (e.Key != Key.Left && e.Key != Key.Right){
+                            Resulttext.CaretIndex = positionDuCurseur;
+                        }
+                    });
+                });
+            }
         }
     }
     private void SettingsBtnDown(object sender, MouseButtonEventArgs e)
@@ -382,7 +424,7 @@ public partial class MainWindow : Window
     private void ChangeCustomImg()
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
-        openFileDialog.Filter = "Fichiers image (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
+        openFileDialog.Filter = "Fichier image|*.jpg;*.jpeg;*.png;*.jfif;*.webp";
         bool? result = openFileDialog.ShowDialog();
         if (result == true)
         {
@@ -428,6 +470,9 @@ public partial class MainWindow : Window
             return;
         case "BtnAz":
             SettignsApp(new string[] {"Azerty"});
+            return;
+        case "BtnSI":
+            SettignsApp(new string[] {"SmartInput"});
             return;
         case "BtnDe":
             SettignsApp(new string[] {"Default"});

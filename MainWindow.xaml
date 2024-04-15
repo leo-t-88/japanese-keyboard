@@ -255,6 +255,41 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
+                        <Button x:Name="BtnSI" Click="OnButtonClicked" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/smartinput.png" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#BBBBBB" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="BtnSIActive" Content="" Width="105" Height="57" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12, 4, 7, 0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border CornerRadius="5" BorderThickness="3">
+                                            <Image Source="./assets/smartinput.png" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border Background="Transparent" CornerRadius="5" BorderThickness="3" BorderBrush="#87CEEB"/>
+                                        <CheckBox Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <CheckBox.Template>
+                                                <ControlTemplate TargetType="CheckBox">
+                                                    <Grid>
+                                                        <Border Background="#87CEEB" CornerRadius="5" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock Text="✔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Foreground="white"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </CheckBox.Template>
+                                        </CheckBox>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </StackPanel>
                     <TextBlock Grid.Row="4" Text="Background :" FontSize="18" Margin="13,0,0,0"/>
                     <StackPanel Grid.Row="5" Orientation="Horizontal">
