@@ -5,7 +5,7 @@
         WindowStartupLocation="CenterScreen" MinHeight="350" MinWidth="940" Topmost="True" StateChanged="WindowStateChanged">
     <Window.Resources>
         <Style x:Key="SquareButton" TargetType="Button">
-            <Setter Property="Background" Value="#80FFFFFF"/>
+            <Setter Property="Background" Value="#90FFFFFF"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="#B5B5B5"/>
             <Setter Property="Cursor" Value="Hand"/>
