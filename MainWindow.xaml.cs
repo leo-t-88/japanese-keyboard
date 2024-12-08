@@ -5,6 +5,8 @@ using System.Windows.Media;
 using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
+using System.Windows.Data;
+using System.Windows.Media.Animation;
 
 namespace Clavier_Jap;
 /// <summary>
@@ -120,10 +122,12 @@ public partial class MainWindow : Window
         if (WindowState == WindowState.Maximized)
         {
             Topmost = false;
+            madeby.HorizontalAlignment = HorizontalAlignment.Left;
         }
         else
         {
             Topmost = true;
+            madeby.HorizontalAlignment = HorizontalAlignment.Center;
         }
     }
     private readonly Dictionary<string, string> substitutionMap = new Dictionary<string, string>()
@@ -194,19 +198,19 @@ public partial class MainWindow : Window
                         UpdateButtonAndResult(ke);
                         break;
                     case Key.OemComma:
-                        UpdateButtonAndResult(mo);
-                        break;
-                    case Key.OemPeriod:
                         UpdateButtonAndResult(ne);
                         break;
-                    case Key.OemQuestion:
+                    case Key.OemPeriod:
                         UpdateButtonAndResult(ru);
                         break;
-                    case Key.Oem8:
+                    case Key.OemQuestion:
                         UpdateButtonAndResult(me);
                         break;
+                    case Key.Oem8:
+                        UpdateButtonAndResult(ro);
+                        break;
                     case Key.W:
-                        UpdateButtonAndResult(tsu);
+                        UpdateButtonAndResult(sa);
                         break;
                     default:
                         break;
@@ -233,7 +237,7 @@ public partial class MainWindow : Window
                         UpdateButtonAndResult(dakuon);
                         break;
                     case Key.Z:
-                        UpdateButtonAndResult(tsu);
+                        UpdateButtonAndResult(sa);
                         break;
                     case Key.A:
                         UpdateButtonAndResult(chi);
@@ -245,16 +249,16 @@ public partial class MainWindow : Window
                         UpdateButtonAndResult(ke);
                         break;
                     case Key.M:
-                        UpdateButtonAndResult(mo);
-                        break;
-                    case Key.OemComma:
                         UpdateButtonAndResult(ne);
                         break;
-                    case Key.OemPeriod:
+                    case Key.OemComma:
                         UpdateButtonAndResult(ru);
                         break;
-                    case Key.OemQuestion:
+                    case Key.OemPeriod:
                         UpdateButtonAndResult(me);
+                        break;
+                    case Key.OemQuestion:
+                        UpdateButtonAndResult(ro);
                         break;
                     default:
                         break;
@@ -320,7 +324,7 @@ public partial class MainWindow : Window
                     UpdateButtonAndResult(se);
                     break;
                 case Key.OemBackslash:
-                    UpdateButtonAndResult(ro);
+                    UpdateButtonAndResult(tsu);
                     break;
                 case Key.Oem5:
                     UpdateButtonAndResult(dakuon2);
@@ -350,19 +354,19 @@ public partial class MainWindow : Window
                     UpdateButtonAndResult(re);
                     break;
                 case Key.X:
-                    UpdateButtonAndResult(sa);
-                    break;
-                case Key.C:
                     UpdateButtonAndResult(so);
                     break;
-                case Key.V:
+                case Key.C:
                     UpdateButtonAndResult(hi);
                     break;
-                case Key.B:
+                case Key.V:
                     UpdateButtonAndResult(ko);
                     break;
-                case Key.N:
+                case Key.B:
                     UpdateButtonAndResult(mi);
+                    break;
+                case Key.N:
+                    UpdateButtonAndResult(mo);
                     break;
                 default:
                     break;
@@ -418,10 +422,37 @@ public partial class MainWindow : Window
         if (setts == false)
         {
             Stngspage.Visibility = Visibility.Visible;
+            Stngspage.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            var scaleTransform = new ScaleTransform(1.5, 1.5);
+            Stngspage.RenderTransform = scaleTransform;
+
+            var scaleAnimation = new DoubleAnimation
+            {
+                From = 1.5,
+                To = 1,
+                Duration = TimeSpan.FromSeconds(0.3),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
             setts = true;
-        } else
+        }
+        else
         {
-            Stngspage.Visibility = Visibility.Collapsed;
+            var scaleTransform = new ScaleTransform(1, 1);
+            Stngspage.RenderTransform = scaleTransform;
+
+            var scaleAnimation = new DoubleAnimation
+            {
+                From = 1,
+                To = 1.5,
+                Duration = TimeSpan.FromSeconds(0.3),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+            };
+            scaleAnimation.Completed += (s, e) => Stngspage.Visibility = Visibility.Collapsed;
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
             setts = false;
         }
     }
@@ -491,7 +522,9 @@ public partial class MainWindow : Window
             ChangeCustomImg();
             return;
         case "caps":
-            if (maj == false){
+                //I know there's a visual glitch where, if you hold down the shift key, the letters change each time between katagana and hiragana (on a high-performance/powerful computer).
+                //If anyone knows how to solve this problem, please let me know by opening a pull request.
+                if (maj == false){
                 nu.Content = "ヌ";fu.Content = "フ";a.Content = "ア";u.Content = "ウ";ee.Content = "エ";o.Content = "オ";ya.Content = "ヤ";yu.Content = "ユ";yo.Content = "ヨ";wa.Content = "ワ";ho.Content = "ホ";
                 ta.Content = "タ";te.Content = "テ";i.Content = "イ";su.Content = "ス";ka.Content = "カ";n.Content = "ン";na.Content = "ナ";ni.Content = "ニ";ra.Content = "ラ";se.Content = "セ";
                 chi.Content = "チ";to.Content = "ト";shi.Content = "シ";ha.Content = "ハ";ki.Content = "キ";ku.Content = "ク";ma.Content = "マ";no.Content = "ノ";re.Content = "レ";ri.Content = "リ";ke.Content = "ケ";mu.Content = "ム";
@@ -600,5 +633,11 @@ public partial class MainWindow : Window
                 }
             });
         });
+    }
+
+    private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+    {
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+        e.Handled = true;
     }
 }
