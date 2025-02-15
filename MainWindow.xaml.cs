@@ -35,7 +35,7 @@ public partial class MainWindow : Window
     }
     private void SettignsApp(string[] args)
     {
-        string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "config.json");
+        string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
         if (!File.Exists(configFilePath))
         {
             var defaultConfig = new KeyboardConfig
@@ -162,7 +162,7 @@ public partial class MainWindow : Window
     {
         if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
         {
-            string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "config.json");
+            string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
             string jsonContent = File.ReadAllText(configFilePath);
             var config = JsonSerializer.Deserialize<KeyboardConfig>(jsonContent);
             if (config.KeyboardApp != "smartinput"){
@@ -422,37 +422,11 @@ public partial class MainWindow : Window
         if (setts == false)
         {
             Stngspage.Visibility = Visibility.Visible;
-            Stngspage.RenderTransformOrigin = new Point(0.5, 0.5);
-
-            var scaleTransform = new ScaleTransform(1.5, 1.5);
-            Stngspage.RenderTransform = scaleTransform;
-
-            var scaleAnimation = new DoubleAnimation
-            {
-                From = 1.5,
-                To = 1,
-                Duration = TimeSpan.FromSeconds(0.3),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-            };
-            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
-            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
             setts = true;
         }
         else
         {
-            var scaleTransform = new ScaleTransform(1, 1);
-            Stngspage.RenderTransform = scaleTransform;
-
-            var scaleAnimation = new DoubleAnimation
-            {
-                From = 1,
-                To = 1.5,
-                Duration = TimeSpan.FromSeconds(0.3),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
-            };
-            scaleAnimation.Completed += (s, e) => Stngspage.Visibility = Visibility.Collapsed;
-            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
-            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
+            Stngspage.Visibility = Visibility.Collapsed;
             setts = false;
         }
     }
